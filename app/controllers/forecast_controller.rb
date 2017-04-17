@@ -17,16 +17,19 @@ class ForecastController < ApplicationController
     # ==========================================================================
 
 
+    weather_url = "https://api.darksky.net/forecast/bf63e8ad46b14e539229a60f2b5ca166/" + @lat.to_s + "," + @lng.to_s
+    weather_parsed_data = JSON.parse(open(weather_url).read)
 
-    @current_temperature = "Replace this string with your answer."
 
-    @current_summary = "Replace this string with your answer."
+    @current_temperature = weather_parsed_data["currently"]["temperature"]
 
-    @summary_of_next_sixty_minutes = "Replace this string with your answer."
+    @current_summary = weather_parsed_data["currently"]["summary"]
 
-    @summary_of_next_several_hours = "Replace this string with your answer."
+    @summary_of_next_sixty_minutes = weather_parsed_data["minutely"]["summary"]
 
-    @summary_of_next_several_days = "Replace this string with your answer."
+    @summary_of_next_several_hours = weather_parsed_data["hourly"]["summary"]
+
+    @summary_of_next_several_days = weather_parsed_data["daily"]["summary"]
 
     render("forecast/coords_to_weather.html.erb")
   end
